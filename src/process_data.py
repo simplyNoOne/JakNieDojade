@@ -5,19 +5,18 @@ from graph_structure import Graph, NodeA
 from constants import *
 import csv
 
-def convert_csv_to_lowercase(input_file):
-    with open(input_file, mode='r', newline='', encoding='utf-8') as infile:
+def format_csv() -> None:
+    with open(data_file, mode='r', newline='', encoding='utf-8') as infile:
         reader = csv.reader(infile)
         rows = [[cell.lower() for cell in row] for row in reader]
     
-    with open(input_file, mode='w', newline='', encoding='utf-8') as outfile:
+    with open(formated_file, mode='w', newline='', encoding='utf-8') as outfile:
         writer = csv.writer(outfile)
         writer.writerows(rows)
 
 
-def get_raw_data_from_csv() -> set:
-    convert_csv_to_lowercase(data_file)
-    df = pd.read_csv(data_file, usecols=use_cols)
+def get_data_from_csv() -> set:
+    df = pd.read_csv(formated_file, usecols=use_cols)
     no_dupls =  set(df.itertuples(index=False, name="Rowtuple"))
     stop_coords = defaultdict(set)
 

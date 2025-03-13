@@ -9,7 +9,6 @@ class Edge:
         self.line: str = data.line
         dep_time = str(int(data.departure_time[:2]) % 24) + data.departure_time[2:]
         arr_time = str(int(data.arrival_time[:2]) % 24) + data.arrival_time[2:]
-        
         self.start_t: datetime.datetime = datetime.datetime.strptime(dep_time, '%H:%M:%S')
         self.end_t: datetime.datetime = datetime.datetime.strptime(arr_time, '%H:%M:%S')
         self.start_s: str = data.start_stop.lower()
@@ -49,8 +48,7 @@ class NodeA:
         self.connected_nodes[formated_name].update(entry)
 
     def get_coords(self):
-        i, v =next(iter(self.connected_nodes.items()))
-        print(i)
+        _, v =next(iter(self.connected_nodes.items()))
         return (v.connecting_edges[0].start_lat, v.connecting_edges[0].start_lon)
 
 class Graph:
