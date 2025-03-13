@@ -12,8 +12,8 @@ class Edge:
         
         self.start_t: datetime.datetime = datetime.datetime.strptime(dep_time, '%H:%M:%S')
         self.end_t: datetime.datetime = datetime.datetime.strptime(arr_time, '%H:%M:%S')
-        self.start_s: str = data.start_stop
-        self.end_s: str = data.end_stop
+        self.start_s: str = data.start_stop.lower()
+        self.end_s: str = data.end_stop.lower()
         self.start_lat: float = data.start_stop_lat
         self.start_lon: float = data.start_stop_lon
         self.end_lat: float = data.end_stop_lat
@@ -43,12 +43,14 @@ class NodeA:
         self.connected_nodes: dict[NodeB] = defaultdict(NodeB)
 
     def update(self, entry: namedtuple):
-        if entry.end_stop not in self.connected_nodes:
-            self.connected_nodes[entry.end_stop] = NodeB()
-        self.connected_nodes[entry.end_stop].update(entry)
+        formated_name = entry.end_stop.lower()
+        if formated_name not in self.connected_nodes:
+            self.connected_nodes[formated_name] = NodeB()
+        self.connected_nodes[formated_name].update(entry)
 
     def get_coords(self):
-        _, v =next(iter(self.connected_nodes.items()))
+        i, v =next(iter(self.connected_nodes.items()))
+        print(i)
         return (v.connecting_edges[0].start_lat, v.connecting_edges[0].start_lon)
 
 class Graph:

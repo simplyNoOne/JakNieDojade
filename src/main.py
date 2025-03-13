@@ -19,14 +19,14 @@ def main():
         with open(pickle_file, "wb") as f:
             pickle.dump(graph, f)
 
-    print(graph.get_first_for("Paprotna", "Irysowa").line)
+    # print(graph.get_first_for("paprotna", "Irysowa").line)
         
-    print(len(graph.nodes))
-    print(len(graph.nodes["Paprotna"].connected_nodes["Obornicka (Wołowska)"].connecting_edges))
+    # print(len(graph.nodes))
+    # print(len(graph.nodes["Paprotna"].connected_nodes["Obornicka (Wołowska)"].connecting_edges))
 
-    start_time = datetime.datetime.strptime("11:56:00", "%H:%M:%S")
+    start_time = datetime.datetime.strptime("07:56:00", "%H:%M:%S")
 
-    path, cost = dijkstra(graph, "Paprotna", "Lawendowa", start_time)
+    path, cost = dijkstra(graph, "paprotna", "lawendowa", start_time)
 
     for p in path:
         print(p.line, p.start_s, p.start_t,p.end_s, p.end_t, sep=", ")

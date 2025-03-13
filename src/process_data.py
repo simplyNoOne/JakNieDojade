@@ -3,9 +3,20 @@ import pandas as pd
 from collections import defaultdict
 from graph_structure import Graph, NodeA
 from constants import *
+import csv
+
+def convert_csv_to_lowercase(input_file):
+    with open(input_file, mode='r', newline='', encoding='utf-8') as infile:
+        reader = csv.reader(infile)
+        rows = [[cell.lower() for cell in row] for row in reader]
+    
+    with open(input_file, mode='w', newline='', encoding='utf-8') as outfile:
+        writer = csv.writer(outfile)
+        writer.writerows(rows)
 
 
-def get_raw_data_from_csv() -> set:    
+def get_raw_data_from_csv() -> set:
+    convert_csv_to_lowercase(data_file)
     df = pd.read_csv(data_file, usecols=use_cols)
     no_dupls =  set(df.itertuples(index=False, name="Rowtuple"))
     stop_coords = defaultdict(set)
@@ -38,7 +49,8 @@ def get_raw_data_from_csv() -> set:
 def get_structure_from_set(source_set: set) -> Graph:
     graph = Graph()
     for entry in source_set:
-        if entry.start_stop not in graph.nodes:
-            graph.nodes[entry.start_stop] = NodeA()
-        graph.nodes[entry.start_stop].update(entry)
+        formated_name = entry.start_stop
+        if formated_name not in graph.nodes:
+            graph.nodes[formated_name] = NodeA()
+        graph.nodes[formated_name].update(entry)
     return graph
