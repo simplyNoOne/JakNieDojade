@@ -7,6 +7,8 @@ from bisect import bisect
 class Edge:
     def __init__(self, data: namedtuple):
         self.line: str = data.line
+        if type(self.line) == int:
+            self.line = str(self.line)
         dep_time = str(int(data.departure_time[:2]) % 24) + data.departure_time[2:]
         arr_time = str(int(data.arrival_time[:2]) % 24) + data.arrival_time[2:]
         self.start_t: datetime.datetime = datetime.datetime.strptime(dep_time, '%H:%M:%S')
@@ -61,12 +63,27 @@ class Graph:
             return connections[0]
         return None
     
-    def get_time_cost(self, start: str, end: str, time: datetime.datetime) -> tuple[int, Edge]:
+    def get_time_cost(self, start: str, end: str, time: datetime.datetime, last_line: str, used_lines: int) -> tuple[int, Edge]:
         possible_paths : list[Edge] = self.nodes[start].connected_nodes[end].get_sorted_edges()
         soonest = self.find_first_after(possible_paths, time)
         if soonest is None:
             soonest = possible_paths[0]
-        return soonest.get_travel_time() + abs((soonest.start_t - time).seconds / 60.0), soonest
+        time_cost = soonest.get_travel_time() + abs((soonest.start_t - time).seconds / 60.0)
+        if soonest.line != last_line:
+            time_cost += used_lines * 15
+        return time_cost, soonest
+    
+    def get_switch_cost(self, start: str, end: str, time: datetime.datetime, last_line: str, used_lines: int):
+        possible_paths : list[Edge] = self.nodes[start].connected_nodes[end].get_sorted_edges()
+        soonest_id = self.find_first_id_after(possible_paths, time)
+        if soonest_id is None:
+            soonest_id = 0
+        for i in range(3):
+            index = (i + soonest_id) % len(possible_paths)
+            if possible_paths[index].line == last_line:
+                return possible_paths[index].get_travel_time() + abs((possible_paths[index].start_t - time).seconds / 60.0) / 10, possible_paths[index]
+        return possible_paths[soonest_id].get_travel_time() + abs((possible_paths[soonest_id].start_t - time).seconds / 60.0) / 10 + used_lines * 100, possible_paths[soonest_id]
+
     
     def find_first_after(self, paths: list[Edge], time: datetime.datetime):
         path_i = bisect(paths, time, key = lambda path: path.start_t)
@@ -74,6 +91,15 @@ class Graph:
             return paths[path_i - 1]
         if path_i != len(paths):
             return paths[path_i]
+        return None
+    
+
+    def find_first_id_after(self, paths: list[Edge], time: datetime.datetime):
+        path_i = bisect(paths, time, key = lambda path: path.start_t)
+        if paths[path_i - 1].start_t == time:
+            return path_i - 1
+        if path_i != len(paths):
+            return path_i
         return None
     
     def get_coords(self, stop: str):

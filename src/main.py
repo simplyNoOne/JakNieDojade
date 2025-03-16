@@ -1,10 +1,11 @@
 import os
+import sys
 import pickle
 from process_data import *
 from constants import *
 from graph_structure import *
 from algorithms import dijkstra, astar
-
+from utils import pretty_print
 
 def main():
     if os.path.exists(pickle_file):
@@ -24,21 +25,31 @@ def main():
 
 
 
-    start_time = datetime.datetime.strptime("07:56:00", "%H:%M:%S")
+    start_time = datetime.datetime.strptime("12:26:00", "%H:%M:%S")
 
-    print("DIJKSTRA")
-    path, cost = dijkstra(graph, "pl. grunwaldzki", "dh astra", start_time)
+    print("DIJKSTRA1")
+    path, cost = dijkstra(graph, "pl. bema", "dh astra", start_time, graph.get_time_cost)
 
-    for p in path:
-        print(p.line, p.start_s, p.start_t,p.end_s, p.end_t, sep=", ")
-    print(cost)
+    pretty_print(path)
+    print(cost, file=sys.stderr)
 
-    print("ASTAR")
-    path, cost = astar(graph, "pl. grunwaldzki", "dh astra", start_time)
+    print("ASTAR1")
+    path, cost = astar(graph, "pl. grunwaldzki", "michalczyka", start_time, graph.get_time_cost)
 
-    for p in path:
-        print(p.line, p.start_s, p.start_t,p.end_s, p.end_t, sep=", ")
-    print(cost)
+    pretty_print(path)
+    print(cost, file=sys.stderr)
+
+    print("DIJKSTRA2")
+    path, cost = dijkstra(graph, "pl. grunwaldzki", "dh astra", start_time, graph.get_switch_cost)
+
+    pretty_print(path)
+    print(cost, file=sys.stderr)
+
+    print("ASTAR2")
+    path, cost = astar(graph, "pl. grunwaldzki", "michalczyka", start_time, graph.get_switch_cost)
+
+    pretty_print(path)
+    print(cost, file=sys.stderr)
 
 
 if __name__ == "__main__":

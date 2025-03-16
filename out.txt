@@ -1,0 +1,17 @@
+Pickle file exists. Loading data...
+DIJKSTRA1
+11: Pl. Bema - 12:26 ---> Daszyńskiego - 12:31
+111: Daszyńskiego - 12:40 ---> Obornicka (Obwodnica) - 12:53
+101: Obornicka (Obwodnica) - 12:58 ---> Kolista - 13:05
+126: Kolista - 13:13 ---> Dh Astra - 13:18
+ASTAR1
+1: Pl. Grunwaldzki - 12:28 ---> Piastowska - 12:30
+19: Piastowska - 12:34 ---> Michalczyka - 12:49
+DIJKSTRA2
+12: Pl. Grunwaldzki - 12:27 ---> Pl. Jana Pawła Ii - 12:42
+122: Pl. Jana Pawła Ii - 12:45 ---> Kwiska - 12:56
+10: Kwiska - 12:57 ---> Dh Astra - 12:59
+ASTAR2
+12: Pl. Grunwaldzki - 12:27 ---> Pl. Jana Pawła Ii - 12:42
+15: Pl. Jana Pawła Ii - 12:43 ---> Kępa Mieszczańska - 12:45
+19: Kępa Mieszczańska - 12:47 ---> Michalczyka - 12:49
