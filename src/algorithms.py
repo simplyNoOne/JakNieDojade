@@ -11,7 +11,8 @@ def dijkstra(graph: Graph, start: str, end: str, start_time, const_func):
     ordering = 0
     last_line = ""
     used_lines = 0
-    
+    node_count = 0
+
     while pq:
         cost, _, current, path, chosen_edge = heapq.heappop(pq)
         
@@ -23,18 +24,20 @@ def dijkstra(graph: Graph, start: str, end: str, start_time, const_func):
             path = path + [chosen_edge]
             curr_time = chosen_edge.end_t
             if last_line != chosen_edge.line:
-                # print(type(last_line))
                 last_line = chosen_edge.line
                 used_lines += 1
         
         if current == end:
+            print("Dijkstra node count: ", node_count)
             return path, cost 
+        
         
         for neighbor in graph.nodes[current].connected_nodes.keys():
             edge_cost, chosen_edge =  const_func(current, neighbor, curr_time, last_line, used_lines) 
             neighbor_cost = cost + edge_cost
             ordering += 1
             heapq.heappush(pq, (neighbor_cost, ordering, neighbor, path, chosen_edge))
+            node_count += 1
     return None, float('inf')
 
 
@@ -47,6 +50,7 @@ def astar(graph: Graph, start: str, end: str, start_time, cost_func):
     ordering = 0
     last_line = ""
     used_lines = 0
+    node_count = 0
     
     while pq:
         cost, _, current, path, chosen_edge = heapq.heappop(pq)
@@ -63,6 +67,7 @@ def astar(graph: Graph, start: str, end: str, start_time, cost_func):
                 used_lines += 1
         
         if current == end:
+            print("Astar node count: ", node_count)
             return path, cost 
         
         for neighbor in graph.nodes[current].connected_nodes.keys():
@@ -71,9 +76,10 @@ def astar(graph: Graph, start: str, end: str, start_time, cost_func):
             neighbor_cost = cost + edge_cost + heuristic(neighbor_coords[0], neighbor_coords[1], end_coords[0], end_coords[1])
             ordering += 1
             heapq.heappush(pq, (neighbor_cost, ordering, neighbor, path, chosen_edge))
+            node_count += 1
     return None, float('inf')
 
 
 def heuristic(start_lat, start_lon, end_lat, end_lon):
-    return geopy.distance.distance((start_lat, start_lon), (end_lat, end_lon)).km * 60.0 / 15.0
+    return geopy.distance.distance((start_lat, start_lon), (end_lat, end_lon)).km * 60.0 / 20.0
 
