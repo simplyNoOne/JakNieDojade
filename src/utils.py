@@ -3,7 +3,9 @@ from graph_structure import Edge
 def pretty_print(stops: list[Edge]):
     print("\n\t<===============================>")
     if stops is None or stops == []:
-        print("Niestety nie udało się wytyczyć trasy.") 
+        print("\tNiestety nie udało się wytyczyć trasy.") 
+        print("\n\t<===============================>")
+        return
     start_time = ""
     start_stop = ""
     end_time = ""

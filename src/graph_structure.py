@@ -38,7 +38,6 @@ class NodeB:
             self.was_sorted = True
         return self.connecting_edges
 
-
 class NodeA:
     def __init__(self):
         self.connected_nodes: dict[NodeB] = defaultdict(NodeB)

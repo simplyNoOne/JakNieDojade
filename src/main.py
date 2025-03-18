@@ -16,7 +16,7 @@ def main():
             graph = pickle.load(f)
     else:
         print("Pickle file does not exist. Creating new pickle file...")
-        
+
         if not os.path.exists(formated_file):
             print("Formating csv first...")
             format_csv()
@@ -26,14 +26,12 @@ def main():
             pickle.dump(graph, f)
 
     parser = argparse.ArgumentParser(description="JakNieDojade")
-    
-    # Add arguments to the parser
+
     parser.add_argument('start_stop', type=str, help="Start station (A)")
     parser.add_argument('end_stop', type=str, help="End station (B)")
     parser.add_argument('arrival_time', type=str, help="Time of arrival at the start station (format: HH:MM)")
     parser.add_argument('criterion', type=str, choices=['t', 'p'], help="Optimization criterion: 't' for minimizing travel time, 'p' for minimizing line changes")
 
-    #Parse the arguments
     args = parser.parse_args()
 
     start_time = datetime.datetime.strptime(args.arrival_time, "%H:%M")
@@ -42,7 +40,7 @@ def main():
         path, cost = dijkstra(graph, args.start_stop, args.end_stop, start_time, graph.get_time_cost)
     else:
         path, cost = astar(graph, args.start_stop, args.end_stop, start_time, graph.get_switch_cost)
-    
+
     pretty_print(path)
     print("Cost function value: ", cost, file=sys.stderr)
 

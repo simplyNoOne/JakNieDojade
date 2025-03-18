@@ -29,8 +29,7 @@ def dijkstra(graph: Graph, start: str, end: str, start_time, const_func):
         
         if current == end:
             return path, cost 
-        
-        
+
         for neighbor in graph.nodes[current].connected_nodes.keys():
             edge_cost, chosen_edge =  const_func(current, neighbor, curr_time, last_line, used_lines) 
             neighbor_cost = cost + edge_cost
@@ -38,7 +37,6 @@ def dijkstra(graph: Graph, start: str, end: str, start_time, const_func):
             heapq.heappush(pq, (neighbor_cost, ordering, neighbor, path, used_lines, last_line, chosen_edge))
             node_count += 1
     return None, float('inf')
-
 
 def astar(graph: Graph, start: str, end: str, start_time, cost_func):
     end_coords = graph.get_coords(end)
@@ -48,13 +46,13 @@ def astar(graph: Graph, start: str, end: str, start_time, cost_func):
     curr_time = start_time
     ordering = 0
     node_count = 0
-    
+
     while pq:
         cost, _, current, path, used_lines, last_line, chosen_edge = heapq.heappop(pq)
-        
+
         if current in visited and visited[current] <= cost:
             continue
-        
+
         visited[current] = cost
         if chosen_edge is not None:
             path = path + [chosen_edge]
@@ -62,10 +60,10 @@ def astar(graph: Graph, start: str, end: str, start_time, cost_func):
             if last_line != chosen_edge.line:
                 last_line = chosen_edge.line
                 used_lines += 1
-        
+
         if current == end:
             return path, cost 
-        
+
         for neighbor in graph.nodes[current].connected_nodes.keys():
             edge_cost, chosen_edge =  cost_func(current, neighbor, curr_time, last_line, used_lines) 
             neighbor_coords = graph.get_coords(neighbor)
@@ -75,7 +73,5 @@ def astar(graph: Graph, start: str, end: str, start_time, cost_func):
             node_count += 1
     return None, float('inf')
 
-
 def heuristic(start_lat, start_lon, end_lat, end_lon):
-    return (abs(end_lon - start_lon) + abs(end_lat - start_lat)) * 200
-
+    return (abs(end_lon - start_lon) + abs(end_lat - start_lat)) * 100
