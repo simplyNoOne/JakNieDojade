@@ -82,9 +82,9 @@ class Graph:
         soonest = self.find_first_after(possible_paths, time)
         if soonest is None:
             soonest = possible_paths[0]
-        time_cost = (soonest.get_travel_time() + abs((soonest.start_t - time).seconds / 60.0)) / 5
+        time_cost = (soonest.get_travel_time() + abs((soonest.start_t - time).seconds / 60.0))
         if soonest.line != last_line:
-            time_cost += 10 ^ used_lines
+            time_cost += 100 * used_lines
         return time_cost, soonest
 
     def find_first_after(self, paths: list[Edge], time: datetime.datetime):

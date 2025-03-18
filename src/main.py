@@ -1,5 +1,6 @@
 import os
 import sys
+import time
 import pickle
 import argparse
 from process_data import *
@@ -45,35 +46,40 @@ def main():
     # pretty_print(path)
     # print(cost, file=sys.stderr)
 
-    start_time = datetime.datetime.strptime("14:23", "%H:%M")
+    start_time = datetime.datetime.strptime("15:53", "%H:%M")
     start_stop = "pl. grunwaldzki"
     end_stop = "dh astra"
 
     
-    print("DIJKSTRA1")
-    path, cost = dijkstra(graph, "pl. grunwaldzki", "dh astra", start_time, graph.get_time_cost)
+    print("\nDIJKSTRA1")
+    path, cost = dijkstra(graph, start_stop, end_stop, start_time, graph.get_time_cost)
 
     pretty_print(path)
     print(cost, file=sys.stderr)
 
-    print("ASTAR1")
-    path, cost = astar(graph, "pl. grunwaldzki", "michalczyka", start_time, graph.get_time_cost)
+    print("\nASTAR1")
+    path, cost = astar(graph, start_stop, end_stop, start_time, graph.get_time_cost)
 
     pretty_print(path)
     print(cost, file=sys.stderr)
 
-    print("DIJKSTRA2")
-    path, cost = dijkstra(graph, "pl. grunwaldzki", "dh astra", start_time, graph.get_switch_cost)
+    print("\nDIJKSTRA2")
+    path, cost = dijkstra(graph, start_stop, end_stop,  start_time, graph.get_switch_cost)
 
     pretty_print(path)
     print(cost, file=sys.stderr)
 
-    print("ASTAR2")
-    path, cost = astar(graph, "pl. grunwaldzki", "michalczyka", start_time, graph.get_switch_cost)
+    print("\nASTAR2")
+    path, cost = astar(graph, start_stop, end_stop, start_time, graph.get_switch_cost)
 
     pretty_print(path)
     print(cost, file=sys.stderr)
+
 
 
 if __name__ == "__main__":
+    start_time = time.time()
     main()
+    end_time = time.time()
+    execution_time = end_time - start_time
+    print(f"Execution time: {execution_time:.4f} seconds", file=sys.stderr)
