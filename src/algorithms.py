@@ -1,7 +1,9 @@
 
 import heapq
 from graph_structure import Graph
-import geopy.distance
+
+km_per_deg = 111
+mins_per_km = 3
 
 def dijkstra(graph: Graph, start: str, end: str, start_time, const_func):
     pq = []
@@ -40,12 +42,12 @@ def dijkstra(graph: Graph, start: str, end: str, start_time, const_func):
 
 def astar(graph: Graph, start: str, end: str, start_time, cost_func):
     end_coords = graph.get_coords(end)
-    pq = []
-    heapq.heappush(pq, (0, -1, start, [], 0, "", None))
-    visited = {}
+    pq = []                     # queue
+    visited = {}                # cost for each visited node
     curr_time = start_time
-    ordering = 0
-    node_count = 0
+    ordering = 0                # arbitrary, needed for the correct behaviour of heapq
+
+    heapq.heappush(pq, (0, -1, start, [], 0, "", None))
 
     while pq:
         cost, _, current, path, used_lines, last_line, chosen_edge = heapq.heappop(pq)
@@ -70,8 +72,7 @@ def astar(graph: Graph, start: str, end: str, start_time, cost_func):
             neighbor_cost = cost + edge_cost + heuristic(neighbor_coords[0], neighbor_coords[1], end_coords[0], end_coords[1])
             ordering += 1
             heapq.heappush(pq, (neighbor_cost, ordering, neighbor, path, used_lines, last_line, chosen_edge))
-            node_count += 1
     return None, float('inf')
 
 def heuristic(start_lat, start_lon, end_lat, end_lon):
-    return (abs(end_lon - start_lon) + abs(end_lat - start_lat)) * 100
+    return (abs(end_lon - start_lon) + abs(end_lat - start_lat)) * km_per_deg * mins_per_km

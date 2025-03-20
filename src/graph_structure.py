@@ -81,7 +81,7 @@ class Graph:
         soonest_id = self.find_first_id_after(possible_paths, time, last_line)
         if soonest_id is None:
             soonest_id = 0
-        cost =  possible_paths[soonest_id].get_travel_time() + abs((possible_paths[soonest_id].start_t - time).seconds / 60.0) / 5
+        cost =  possible_paths[soonest_id].get_travel_time() + abs((possible_paths[soonest_id].start_t - time).seconds / 60.0)
         if possible_paths[soonest_id].line != last_line:
             cost += 80 * used_lines
         return cost, possible_paths[soonest_id]    
